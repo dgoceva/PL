@@ -4,6 +4,8 @@
 
 #define MAX_LEN 30
 
+void inputArray(int *data);
+
 void main()
 {
     int data[MAX_LEN];
@@ -11,12 +13,7 @@ void main()
     int sum = 0;
     int max, min;
 
-    // srand((unsigned int)time(NULL));
-
-    for (i = 0; i < MAX_LEN; i++)
-    {
-        data[i] = rand() % 50 - 20;
-    }
+    inputArray(data);
 
     for (i = 0; i < MAX_LEN; i++)
     {
@@ -42,4 +39,16 @@ void main()
         }
     }
     printf("Min T is %d\tMax T is %d\n", min, max);
+}
+
+void inputArray(int *data)
+{
+    int i;
+
+    // srand((unsigned int)time(NULL));
+
+    for (i = 0; i < MAX_LEN; i++)
+    {
+        data[i] = rand() % 50 - 20;
+    }
 }
