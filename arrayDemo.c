@@ -2,24 +2,20 @@
 #include <stdlib.h>
 #include <time.h>
 
-#define MAX_LEN 10
+#define MAX_LEN 30
 
 void main()
 {
     int data[MAX_LEN];
     int i;
+    int sum = 0;
+    int max, min;
 
-    // for (i = 0; i < MAX_LEN; i++)
-    // {
-    //     printf("A[%d]=", i + 1);
-    //     scanf("%d", &data[i]);
-    // }
-
-    srand((unsigned int)time(NULL));
+    // srand((unsigned int)time(NULL));
 
     for (i = 0; i < MAX_LEN; i++)
     {
-        data[i] = rand() % 100;
+        data[i] = rand() % 50 - 20;
     }
 
     for (i = 0; i < MAX_LEN; i++)
@@ -28,9 +24,22 @@ void main()
     }
     printf("\n");
 
-    for (i = MAX_LEN - 1; i >= 0; i--)
+    for (i = 0; i < MAX_LEN; i++)
     {
-        printf("%d\t", data[i]);
+        sum += data[i];
     }
-    printf("\n");
+    printf("Average T is %.2g\n", (float)sum / MAX_LEN);
+
+    for (min = max = data[0], i = 1; i < MAX_LEN; i++)
+    {
+        if (data[i] < min)
+        {
+            min = data[i];
+        }
+        if (data[i] > max)
+        {
+            max = data[i];
+        }
+    }
+    printf("Min T is %d\tMax T is %d\n", min, max);
 }
