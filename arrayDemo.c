@@ -21,6 +21,9 @@ void powerArray(int *in, int *out, int power);
 boolean isEven(int number);
 unsigned int evenArray(int *in, int *out);
 int minOddValue(int *data, unsigned int size);
+void bubbleSort(int *data, unsigned int size);
+void selectSort(int *data, unsigned int size);
+int cmpSort(const void *a, const void *b);
 
 void main()
 {
@@ -54,6 +57,14 @@ void main()
         printf("Min odd element is %d, it's position is %d\n",
                data[min], min + 1);
     }
+    bubbleSort(data, MAX_LEN);
+    printArray(data, MAX_LEN);
+
+    selectSort(data, MAX_LEN);
+    printArray(data, MAX_LEN);
+
+    qsort(data, MAX_LEN, sizeof(int), cmpSort);
+    printArray(data, MAX_LEN);
 }
 
 void inputArray(int *data)
@@ -164,4 +175,48 @@ int minOddValue(int *data, unsigned int size)
         }
     }
     return min;
+}
+
+void bubbleSort(int *data, unsigned int size)
+{
+    int i, j;
+    int temp;
+
+    for (i = 0; i < size - 1; i++)
+    {
+        for (j = 0; j < size - i - 1; ++j)
+        {
+            if (data[j] > data[j + 1])
+            {
+                temp = data[j];
+                data[j] = data[j + 1];
+                data[j + 1] = temp;
+            }
+        }
+    }
+}
+
+void selectSort(int *data, unsigned int size)
+{
+    int i, j;
+    int temp, max;
+
+    for (i = 0; i < size - 1; i++)
+    {
+        for (max = i, j = i + 1; j < size; j++)
+        {
+            if (data[max] < data[j])
+            {
+                max = j;
+            }
+        }
+        temp = data[i];
+        data[i] = data[max];
+        data[max] = temp;
+    }
+}
+
+int cmpSort(const void *a, const void *b)
+{
+    return *(int *)a - *(int *)b;
 }
