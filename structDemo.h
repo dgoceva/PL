@@ -4,8 +4,11 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <malloc.h>
+#include <string.h>
+#include <ctype.h>
 
 #define NAMESIZE 100
+#define GROUPSIZE 100
 
 struct TStudent
 {
@@ -24,5 +27,12 @@ typedef struct
 TStudentInfo inputStudent();
 void outputStudent(TStudentInfo *);
 TStudentInfo *inputStudentFromTXT(FILE *file);
+unsigned int inputStudentGroup(char *name, TStudentInfo *group);
+void outputStudentGroup(TStudentInfo *group, unsigned len);
+void writeStudentGroupToCSV(char *name, TStudentInfo *group, unsigned len);
+
+char *ltrim(char *s);
+char *rtrim(char *s);
+char *trim(char *s);
 
 #endif
