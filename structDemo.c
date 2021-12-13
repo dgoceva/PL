@@ -35,6 +35,11 @@ void main()
     {
         outputStudentGroup(students, len);
         printf("Student Average Mark: %g\n", averageStudentMark(students, len));
+        qsort(students, len, sizeof(TStudentInfo), compareMarks);
+        outputStudentGroup(students, len);
+        printf("\n\n\n");
+        qsort(students, len, sizeof(TStudentInfo), compareNames);
+        outputStudentGroup(students, len);
         free(students);
     }
 }
@@ -272,4 +277,24 @@ char *rtrim(char *s)
 char *trim(char *s)
 {
     return rtrim(ltrim(s));
+}
+
+int compareMarks(const void *a, const void *b)
+{
+    float mark_a = ((TStudentInfo *)a)->mark;
+    float mark_b = ((TStudentInfo *)b)->mark;
+
+    if (mark_a > mark_b)
+        return -1;
+    else if (mark_a < mark_b)
+        return 1;
+    return 0;
+}
+
+int compareNames(const void *a, const void *b)
+{
+    char *name_a = ((TStudentInfo *)a)->name;
+    char *name_b = ((TStudentInfo *)b)->name;
+
+    return strcmp(name_a, name_b);
 }

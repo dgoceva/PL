@@ -40,6 +40,8 @@ TStudentInfo *readStudentGroupFromCSV(char *name, unsigned *len);
 float averageStudentMark(TStudentInfo *group, unsigned len);
 
 TStudentInfo studentTokens(char *buffer, TBOOLEAN *isValid);
+int compareMarks(const void *a, const void *b);
+int compareNames(const void *a, const void *b);
 char *ltrim(char *s);
 char *rtrim(char *s);
 char *trim(char *s);
