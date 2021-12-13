@@ -5,8 +5,9 @@ void main()
     // struct TStudent st;
     // TStudentInfo st1, *st2;
     // FILE *f;
-    TStudentInfo group[GROUPSIZE];
+    // TStudentInfo group[GROUPSIZE];
     unsigned len;
+    TStudentInfo *students;
 
     // st1 = inputStudent();
     // outputStudent(&st1);
@@ -23,12 +24,19 @@ void main()
     // }
     // outputStudent(st2);
     // free(st2);
-    len = inputStudentGroup("students.txt", group);
-    if (len == 0)
+    // len = inputStudentGroup("students.txt", group);
+    // if (len == 0)
+    // {
+    //     exit(EXIT_FAILURE);
+    // }
+    // writeStudentGroupToCSV("students.csv", group, len);
+    students = readStudentGroupFromCSV("students.csv", &len);
+    if (students != NULL)
     {
-        exit(EXIT_FAILURE);
+        outputStudentGroup(students, len);
+        printf("Student Average Mark: %g\n", averageStudentMark(students, len));
+        free(students);
     }
-    writeStudentGroupToCSV("students.csv", group, len);
 }
 
 TStudentInfo inputStudent()
@@ -151,6 +159,100 @@ void writeStudentGroupToCSV(char *name, TStudentInfo *group, unsigned len)
     fclose(f);
 }
 
+TStudentInfo *readStudentGroupFromCSV(char *name, unsigned *len)
+{
+    FILE *f;
+    TStudentInfo *group = NULL;
+    TStudentInfo temp;
+    TBOOLEAN validate;
+    char buffer[1024];
+
+    *len = 0;
+    if ((f = fopen(name, "r")) == NULL)
+    {
+        perror("open csv:");
+        return NULL;
+    }
+
+    while (!feof(f))
+    {
+        if (fgets(buffer, sizeof(buffer), f) == NULL)
+        {
+            break;
+        }
+        group = (TStudentInfo *)realloc(group, (*len + 1) * sizeof(TStudentInfo));
+        if (group == NULL)
+        {
+            perror("realloc:");
+            break;
+        }
+
+        temp = studentTokens(buffer, &validate);
+        if (!validate)
+        {
+            break;
+        }
+        group[(*len)++] = temp;
+    }
+    fclose(f);
+    return group;
+}
+
+float averageStudentMark(TStudentInfo *group, unsigned len)
+{
+    int i;
+    float sum = 0;
+
+    for (i = 0; i < len; i++)
+    {
+        sum += group[i].mark;
+    }
+    return (len != 0) ? sum / len : 0;
+}
+
+TStudentInfo studentTokens(char *buffer, TBOOLEAN *isValid)
+{
+    TStudentInfo st;
+    char *token;
+
+    *isValid = FALSE;
+    token = strtok(buffer, ",");
+    if (token == NULL)
+    {
+        perror("id error:");
+        return st;
+    }
+    st.id = atoi(token);
+    if (st.id == 0)
+    {
+        printf("student id mismatch\n");
+        return st;
+    }
+
+    token = strtok(NULL, ",");
+    if (token == NULL)
+    {
+        perror("name error:");
+        return st;
+    }
+    strcpy(st.name, token);
+
+    token = strtok(NULL, ",");
+    if (token == NULL)
+    {
+        perror("mark error:");
+        return st;
+    }
+    st.mark = atof(token);
+    if (st.mark == 0)
+    {
+        printf("student mark mismatch\n");
+        return st;
+    }
+
+    *isValid = TRUE;
+    return st;
+}
 char *ltrim(char *s)
 {
     while (isspace(*s))

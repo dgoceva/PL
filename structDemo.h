@@ -24,13 +24,22 @@ typedef struct
     float mark;
 } TStudentInfo;
 
+typedef enum
+{
+    FALSE,
+    TRUE
+} TBOOLEAN;
+
 TStudentInfo inputStudent();
 void outputStudent(TStudentInfo *);
 TStudentInfo *inputStudentFromTXT(FILE *file);
 unsigned int inputStudentGroup(char *name, TStudentInfo *group);
 void outputStudentGroup(TStudentInfo *group, unsigned len);
 void writeStudentGroupToCSV(char *name, TStudentInfo *group, unsigned len);
+TStudentInfo *readStudentGroupFromCSV(char *name, unsigned *len);
+float averageStudentMark(TStudentInfo *group, unsigned len);
 
+TStudentInfo studentTokens(char *buffer, TBOOLEAN *isValid);
 char *ltrim(char *s);
 char *rtrim(char *s);
 char *trim(char *s);
